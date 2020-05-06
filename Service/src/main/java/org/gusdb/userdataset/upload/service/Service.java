@@ -19,7 +19,7 @@ public class Service {
   private Provider<Request> _request;
 
   @GET
-  @Produces(MediaType.APPLICATION_JSON)
+  @Produces(MediaType.TEXT_PLAIN)
   public Response checkUser() {
     UserProfile user = AuthenticationFilter.getUserProfile(_request.get());
     return Response.ok("Found authenticated user with ID: " + user.getUserId()).build();
