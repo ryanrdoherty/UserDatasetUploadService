@@ -1,0 +1,75 @@
+<project name="UserDatasetUploadService" default="UserDatasetUploadService-Installation" basedir=".">
+
+  <!-- oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo -->
+  <!-- oooooooooooooooooooooooooo  Dependencies  oooooooooooooooooooooooooo -->
+  <!-- oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo -->
+
+  <import file="${projectsDir}/FgpUtil/build.xml" />
+
+  <!-- oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo -->
+  <!-- oooooooooooooooooooooooooo  Installation  oooooooooooooooooooooooooo -->
+  <!-- oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo -->
+
+  <target name="UserDatasetUploadService-Installation" depends="FgpUtil-Installation,
+                                                                UserDatasetUploadService-MavenInstallation,
+                                                                UserDatasetUploadService/Service-Installation">
+    <ant target="defaultProjectInstall">
+      <property name="project" value="UserDatasetUploadService" />
+    </ant>
+  </target>
+
+  <target name="UserDatasetUploadService-MavenInstallation">
+    <ant target="mavenBuildProject">
+      <property name="project" value="UserDatasetUploadService" />
+    </ant>
+    <property name="alreadyBuilt" value="true" />
+  </target>
+
+  <!-- ooooooooooooooooooooooo  Install Components  ooooooooooooooooooooooo -->
+
+  <target name="UserDatasetUploadService/Service-Installation">
+    <ant target="defaultComponentInstall">
+      <property name="project" value="UserDatasetUploadService" />
+      <property name="component" value="Service" />
+    </ant>
+    <!-- Comment for now; probably will want service JSON schema at some point -->
+    <!-- <ant target="UserDatasetUploadService-Schema"/> -->
+  </target>
+
+  <target name="UserDatasetUploadService-Schema" depends="installYarnBin">
+    <echo message="Resolving and merging JSON Schema files"/>
+    <exec dir="${targetDir}/bin"
+          executable="installSchema.sh"
+          failonerror="true"
+          failifexecutionfails="true">
+      <arg line="${projectsDir} ${targetDir}"/>
+    </exec>
+    <ant target="createSchemaJar"/>
+  </target>
+
+  <target name="createSchemaJar">
+    <echo message="Creating JSON schema jar file at ${targetDir}/lib/java/irods-upload-service-schema.jar"/>
+    <exec dir="${targetDir}/doc/UserDatasetUpload/Service"
+          executable="jar"
+          failonerror="true"
+          failifexecutionfails="true">
+      <arg line="cf ${targetDir}/lib/java/irods-upload-service-schema.jar schema"/>
+    </exec>
+  </target>
+
+  <!-- oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo -->
+  <!-- oooooooooooooooooooooooo  Web Installation  oooooooooooooooooooooooo -->
+  <!-- oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo -->
+
+  <target name="UserDatasetUploadService-WebInstallation" depends="UserDatasetUploadService-Installation,
+                                                                   UserDatasetUploadService/Service-WebInstallation"/>
+
+  <target name="UserDatasetUploadService/Service-WebInstallation">
+    <!-- Comment for now; probably will want service RAML at some point -->
+    <!-- <antcall target="runRaml2Html">
+      <param name="inputFile" value="${targetDir}/doc/UserDatasetUpload/Service/raml/api.raml"/>
+      <param name="outputFile" value="${htdocsTargetDir}/service-api.html"/>
+    </antcall> -->
+  </target>
+
+</project>
