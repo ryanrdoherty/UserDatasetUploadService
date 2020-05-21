@@ -29,12 +29,12 @@
 
     <dependency>
       <groupId>org.gusdb</groupId>
-      <artifactId>fgputil-util</artifactId>
+      <artifactId>fgputil-server</artifactId>
     </dependency>
 
     <dependency>
       <groupId>org.gusdb</groupId>
-      <artifactId>fgputil-server</artifactId>
+      <artifactId>fgputil-web</artifactId>
     </dependency>
 
     <dependency>
@@ -124,8 +124,12 @@
     </dependency>
 
     <dependency>
-      <groupId>log4j</groupId>
-      <artifactId>log4j</artifactId>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-core</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-1.2-api</artifactId>
     </dependency>
 
     <dependency>
